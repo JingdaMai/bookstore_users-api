@@ -6,14 +6,16 @@ import (
 	"github.com/JingdaMai/bookstore_items-api/logger"
 	"github.com/JingdaMai/bookstore_items-api/utils/errors"
 	"github.com/JingdaMai/bookstore_items-api/utils/postgres_utils"
+	"strings"
 )
 
 const (
-	queryInsertUser       = "INSERT INTO users(first_name, last_name, email, date_created, password, status) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id;"
-	queryGetUser          = "SELECT id, first_name, last_name, email, date_created, status FROM users WHERE id=$1;"
-	queryUpdateUser       = "UPDATE users SET first_name=$1, last_name=$2, email=$3 WHERE id=$4;"
-	queryDeleteUser       = "DELETE FROM users WHERE id=$1;"
-	queryFindUserByStatus = "SELECT id, first_name, last_name, email, date_created FROM users WHERE status=$1;"
+	queryInsertUser             = "INSERT INTO users(first_name, last_name, email, date_created, password, status) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id;"
+	queryGetUser                = "SELECT id, first_name, last_name, email, date_created, status FROM users WHERE id=$1;"
+	queryUpdateUser             = "UPDATE users SET first_name=$1, last_name=$2, email=$3 WHERE id=$4;"
+	queryDeleteUser             = "DELETE FROM users WHERE id=$1;"
+	queryFindByStatus           = "SELECT id, first_name, last_name, email, date_created FROM users WHERE status=$1;"
+	queryFindByEmailAndPassword = "SELECT id, first_name, last_name, email, date_created, status FROM users WHERE email=$1 AND password=$2 AND status=$3;"
 )
 
 func (user *User) Get() *errors.RestErr {
@@ -90,7 +92,7 @@ func (user *User) Delete() *errors.RestErr {
 }
 
 func (user *User) FindByStatus(status string) (Users, *errors.RestErr) {
-	stmt, err := users_db.Client.Prepare(queryFindUserByStatus)
+	stmt, err := users_db.Client.Prepare(queryFindByStatus)
 	if err != nil {
 		logger.Error("error when trying to prepare find user by status statement", err)
 		return nil, errors.NewInternalServerError(err.Error())
@@ -121,4 +123,24 @@ func (user *User) FindByStatus(status string) (Users, *errors.RestErr) {
 	}
 
 	return results, nil
+}
+
+func (user *User) FindByEmailAndPassword() *errors.RestErr {
+	stmt, err := users_db.Client.Prepare(queryFindByEmailAndPassword)
+	if err != nil {
+		logger.Error("error when trying to prepare get user by email and password statement", err)
+		return errors.NewInternalServerError("database error")
+	}
+	defer stmt.Close()
+
+	result := stmt.QueryRow(user.Email, user.Password, StatusActive)
+	if err = result.Scan(&user.Id, &user.FirstName, &user.LastName, &user.Email, &user.DateCreated, &user.Status); err != nil {
+		if strings.Contains(err.Error(), postgres_utils.ErrorNoRows) {
+			return errors.NewNotFoundError("invalid user credentials")
+		}
+		logger.Error("error when trying to get user by email and password", err)
+		return errors.NewInternalServerError("database error")
+	}
+
+	return nil
 }
