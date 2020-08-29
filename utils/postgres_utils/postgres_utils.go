@@ -1,7 +1,7 @@
 package postgres_utils
 
 import (
-	"github.com/JingdaMai/bookstore_items-api/utils/errors"
+	"github.com/JingdaMai/bookstore_users-api/utils/errors"
 	"github.com/lib/pq"
 	"strings"
 )

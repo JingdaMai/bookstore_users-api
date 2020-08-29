@@ -1,9 +1,9 @@
 package users
 
 import (
-	"github.com/JingdaMai/bookstore_items-api/domain/users"
-	"github.com/JingdaMai/bookstore_items-api/services"
-	"github.com/JingdaMai/bookstore_items-api/utils/errors"
+	"github.com/JingdaMai/bookstore_users-api/domain/users"
+	"github.com/JingdaMai/bookstore_users-api/services"
+	"github.com/JingdaMai/bookstore_users-api/utils/errors"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"

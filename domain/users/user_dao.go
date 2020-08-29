@@ -2,10 +2,10 @@ package users
 
 import (
 	"fmt"
-	"github.com/JingdaMai/bookstore_items-api/datasources/postgresql/users_db"
-	"github.com/JingdaMai/bookstore_items-api/logger"
-	"github.com/JingdaMai/bookstore_items-api/utils/errors"
-	"github.com/JingdaMai/bookstore_items-api/utils/postgres_utils"
+	"github.com/JingdaMai/bookstore_users-api/datasources/postgresql/users_db"
+	"github.com/JingdaMai/bookstore_users-api/logger"
+	"github.com/JingdaMai/bookstore_users-api/utils/errors"
+	"github.com/JingdaMai/bookstore_users-api/utils/postgres_utils"
 	"strings"
 )
 

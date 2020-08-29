@@ -1,4 +1,4 @@
-module github.com/JingdaMai/bookstore_items-api
+module github.com/JingdaMai/bookstore_users-api
 
 go 1.5
 

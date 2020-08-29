@@ -1,10 +1,10 @@
 package services
 
 import (
-	"github.com/JingdaMai/bookstore_items-api/domain/users"
-	"github.com/JingdaMai/bookstore_items-api/utils/crypto_utils"
-	"github.com/JingdaMai/bookstore_items-api/utils/date_utils"
-	"github.com/JingdaMai/bookstore_items-api/utils/errors"
+	"github.com/JingdaMai/bookstore_users-api/domain/users"
+	"github.com/JingdaMai/bookstore_users-api/utils/crypto_utils"
+	"github.com/JingdaMai/bookstore_users-api/utils/date_utils"
+	"github.com/JingdaMai/bookstore_users-api/utils/errors"
 )
 
 var UsersService usersServiceInterface = &usersService{}
